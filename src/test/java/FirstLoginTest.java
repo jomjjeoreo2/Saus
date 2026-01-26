@@ -13,7 +13,7 @@ public class FirstLoginTest {
         //открыть браузер
         //зайти на сайт https://www.saucedemo.com/
 
-        System.setProperty("webdriver.crome.driver", "src/test/resources/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
 
         WebDriver browser = new ChromeDriver();
 
@@ -25,11 +25,11 @@ public class FirstLoginTest {
         browser.findElement(By.xpath("//*[@data-test='password']")).sendKeys("secret_sauce");
         browser.findElement(By.cssSelector("[name='login-button']")).click();
 
-        boolean titleIsDisplayed = browser.findElement(By.ByCssSelector("[data-test='title']")).isDisplayed();
+        boolean titleIsDisplayed = browser.findElement(By.cssSelector("[data-test='title']")).isDisplayed();
         assertTrue(titleIsDisplayed);
 
-        String titleName = browser.findElement(By.ByCssSelector("[data-test='title']")).getText();
-        assertEquals(titleName, "Products")
+        String titleName = browser.findElement(By.cssSelector("[data-test='title']")).getText();
+        assertEquals(titleName, "Products");
 
 
         //browser.findElement(By.xpath("//*[@id='user-mame']"));
