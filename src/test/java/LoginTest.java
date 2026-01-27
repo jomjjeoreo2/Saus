@@ -29,6 +29,6 @@ public class LoginTest extends BaseTest {
                 "Нет сообщения об ошибке");
         assertEquals(browser.findElement(By.cssSelector("[data-test='error']")).getText(),
                 "Epic sadface: Sorry, this user has been locked out.",
-                "Неверный текст сообщения об оишбке");
+                "Неверный текст сообщения об ошибке");
     }
 }
