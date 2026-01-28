@@ -1,5 +1,6 @@
 package tests;
 
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
@@ -14,44 +15,23 @@ public class LoginTest extends BaseTest {
         assertEquals(productsPage.getTitle(), "Products", "Неверный заголовок");
     }
 
-    @Test
-    public void incorrectLogin() {
-        loginPage.open();
-        loginPage.login("locked_out_user", "secret_sauce");
-
-        assertTrue(loginPage.isErrorDisplayed(), "Нет сообщения об ошибке");
-        assertEquals(loginPage.getErrorText(), "Epic sadface: Sorry, this user has been locked out.",
-                "Неверный текст сообщения об ошибке");
+    @DataProvider
+    public Object[][] loginData() {
+        return new Object[][] {
+                {"locked_out_user", "secret_sauce", "Epic sadface: Sorry, this user has been locked out."},
+                {"", "secret_sauce", "Epic sadface: Username is required"},
+                {"locked_out_user", "", "Epic sadface: Password is required"},
+                {"Standard_user", "secret_sauce", "Epic sadface: Username and password do not match any user in this service"}
+        };
     }
 
-    @Test
-    public void emptyLogin() {
+    @Test(dataProvider = "loginData", description = "тест проверяет авторизацию заблокированного пользователя")
+    public void incorrectLogin(String user, String password, String errorMsg) {
         loginPage.open();
-        loginPage.login("", "secret_sauce");
+        loginPage.login(user, password);
 
         assertTrue(loginPage.isErrorDisplayed(), "Нет сообщения об ошибке");
-        assertEquals(loginPage.getErrorText(), "Epic sadface: Username is required",
-                "Неверный текст сообщения об ошибке");
-    }
-
-    @Test
-    public void emptyPassword() {
-        loginPage.open();
-        loginPage.login("locked_out_user", "");
-
-        assertTrue(loginPage.isErrorDisplayed(), "Epic sadface: Password is required");
-        assertEquals(loginPage.getErrorText(), "Epic sadface: Sorry, this user has been locked out.",
-                "Неверный текст сообщения об ошибке");
-    }
-
-    @Test
-    public void unsuitableLogin() {
-        loginPage.open();
-        loginPage.login("locked_out_user", "secret_sauce");
-
-        assertTrue(loginPage.isErrorDisplayed(), "Нет сообщения об ошибке");
-        assertEquals(loginPage.getErrorText(),
-                "Epic sadface: Username and password do not match any user in this service",
+        assertEquals(loginPage.getErrorText(), errorMsg,
                 "Неверный текст сообщения об ошибке");
     }
 }
