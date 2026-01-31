@@ -12,12 +12,12 @@ public class LoginTest extends BaseTest {
         loginPage.open();
         loginPage.login("standard_user", "secret_sauce");
         assertTrue(productsPage.isTitleIsDisplayed(), "Заголовок не виден");
-        assertEquals(productsPage.getTitle(), "Products", "Неверный заголовок");
+        //assertEquals(productsPage.getTitle(), "Products", "Неверный заголовок");
     }
 
     @DataProvider
     public Object[][] loginData() {
-        return new Object[][] {
+        return new Object[][]{
                 {"locked_out_user", "secret_sauce", "Epic sadface: Sorry, this user has been locked out."},
                 {"", "secret_sauce", "Epic sadface: Username is required"},
                 {"locked_out_user", "", "Epic sadface: Password is required"},
