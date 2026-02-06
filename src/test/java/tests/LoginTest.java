@@ -5,12 +5,13 @@ import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
+import static user.UserFactory.withAdminPermission;
 
 public class LoginTest extends BaseTest {
     @Test
     public void correctLogin() {
         loginPage.open();
-        loginPage.login("standard_user", "secret_sauce");
+        loginPage.login(withAdminPermission());
         assertTrue(productsPage.isTitleIsDisplayed(), "Заголовок не виден");
         //assertEquals(productsPage.getTitle(), "Products", "Неверный заголовок");
     }
@@ -18,10 +19,10 @@ public class LoginTest extends BaseTest {
     @DataProvider
     public Object[][] loginData() {
         return new Object[][]{
-                {"locked_out_user", "secret_sauce", "Epic sadface: Sorry, this user has been locked out."},
-                {"", "secret_sauce", "Epic sadface: Username is required"},
+                {"locked_out_user", password, "Epic sadface: Sorry, this user has been locked out."},
+                {"", password, "Epic sadface: Username is required"},
                 {"locked_out_user", "", "Epic sadface: Password is required"},
-                {"Standard_user", "secret_sauce", "Epic sadface: Username and password do not match any user in this service"}
+                {"Standard_user", password, "Epic sadface: Username and password do not match any user in this service"}
         };
     }
 
